@@ -1,0 +1,180 @@
+{
+  "Name": "SP-Get-Site-Permissions",
+  "CreationDate": "2024-10-15",
+  "Commands": [
+    {
+      "Command": "store",
+      "Target": "${!URL}",
+      "Value": "Currentpage",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "currentline",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "getline",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Currentpage}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[1]/input[1]",
+      "Value": "GroupIDxpath",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // GroupIDxpath is ${GroupIDxpath}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "storeValue",
+      "Target": "${GroupIDxpath}",
+      "Value": "GroupID",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // GroupID is ${GroupID}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${GroupID}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${GroupID}==\"#LNF\"",
+      "Value": "End",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var str = ${Currentpage}; var res = str.replace(\"_layouts/15/user.aspx\", \"_layouts/15/people.aspx?MembershipGroupId=\"); return res;",
+      "Value": "GroupUrlBase",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "GroupUrlBase is ${GroupUrlBase}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[2]/table/tbody/tr/td/a",
+      "Value": "Name",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${GroupUrlBase}${GroupID}",
+      "Value": "GroupUrl",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "GroupUrl is ${GroupUrl}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${GroupUrl}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // Name is ${Name}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Name}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[3]",
+      "Value": "Type",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // Type is ${Type}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Type}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[4]",
+      "Value": "PermissionLevel",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // PermissionLevel is ${PermissionLevel}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${PermissionLevel}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "csvLine is ${!csvLine}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "Permissions",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number (${currentline}) + 1",
+      "Value": "currentline",
+      "Description": ""
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${GroupID}!=\"#LNF\"",
+      "Value": "getline",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "End",
+      "Value": "",
+      "Description": ""
+    }
+  ]
+}
