@@ -10,7 +10,7 @@
     },
     {
       "Command": "store",
-      "Target": "2",
+      "Target": "3",
       "Value": "currentline",
       "Description": ""
     },
