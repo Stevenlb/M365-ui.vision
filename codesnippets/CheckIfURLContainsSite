@@ -1,0 +1,114 @@
+{
+  "Name": "CheckIfURLContainsSite",
+  "CreationDate": "2024-10-17",
+  "Commands": [
+    {
+      "Command": "store",
+      "Target": "${!URL}",
+      "Value": "Currentpage",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Currentpage=${Currentpage}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return ${Currentpage}.split(\"/\")[2];",
+      "Value": "Subdomain",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Subdomain=${Subdomain}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "/sites/",
+      "Value": "searchfor",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var haystack1 = ${Currentpage}; var needle = ${searchfor};  return (haystack1.lastIndexOf(needle)  > 0);",
+      "Value": "result",
+      "Description": ".includes done with lastIndexOf ES%"
+    },
+    {
+      "Command": "echo",
+      "Target": "${result} ",
+      "Value": "green",
+      "Description": "TRUE because the string contains /sites/"
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${result} == false",
+      "Value": "isrootsite",
+      "Description": ""
+    },
+    {
+      "Command": "gotoLabel",
+      "Target": "isnotrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "isrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "is a root site",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "gotoLabel",
+      "Target": "end",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "isnotrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Is not a root site",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return ${Currentpage}.split(\"/\")[4];",
+      "Value": "SiteName",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "SiteName=${SiteName}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // RootPath=${RootPath}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "end",
+      "Value": "",
+      "Description": ""
+    }
+  ]
+}
