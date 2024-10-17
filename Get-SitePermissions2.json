@@ -1,0 +1,66 @@
+{
+  "Name": "Export SharePoint Permissions to CSV",
+  "CreationDate": "2024-10-17",
+  "Commands": [
+    {
+      "Command": "store",
+      "Target": "eval|Date.now()",
+      "Value": "timestamp",
+      "Comment": "Generate a timestamp (milliseconds since epoch) and store it in the 'timestamp' variable for use in the filename"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[@id='O365_MainLink_Settings']",
+      "Value": "",
+      "Comment": "Click on the Settings gear icon in the SharePoint top navigation bar"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[contains(text(), 'Site permissions')]",
+      "Value": "",
+      "Comment": "Click on the 'Site permissions' option in the settings menu"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[contains(text(), 'Advanced permissions settings')]",
+      "Value": "",
+      "Comment": "Click on the 'Advanced permissions settings' link in the permissions panel"
+    },
+    {
+      "Command": "selectWindow",
+      "Target": "tab=1",
+      "Value": "",
+      "Comment": "Switch to the new tab that opens with the advanced permissions settings"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*[@id='Ribbon.Permission.Grant.ManageUserPerms-Large']",
+      "Value": "",
+      "Comment": "Click on the 'Check Permissions' button in the ribbon to view the permissions table"
+    },
+    {
+      "Command": "storeText",
+      "Target": "css=#DeltaPlaceHolderPageTitleInTitleArea",
+      "Value": "siteName",
+      "Comment": "Extract the site name from the page title and store it in the 'siteName' variable for use in the filename"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "const table = document.querySelector('#onetidPermissionsTable'); const rows = Array.from(table.querySelectorAll('tr')); const data = rows.map(row => { const cells = Array.from(row.querySelectorAll('td')); return cells.map(cell => cell.textContent.trim()).join(','); }); return data.join('\\n');",
+      "Value": "csvData",
+      "Comment": "Execute a JavaScript function to extract data from the permissions table, format it as CSV, and store it in the 'csvData' variable"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "const blob = new Blob([`User,Type,Permission\\n${${csvData}}`], {type: 'text/csv'}); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `${storedVars.siteName}_permissions_${storedVars.timestamp}.csv`; a.click(); URL.revokeObjectURL(a.href);",
+      "Value": "",
+      "Comment": "Execute a JavaScript function to create a Blob with the CSV data, generate a download link, trigger the download, and clean up the object URL"
+    },
+    {
+      "Command": "echo",
+      "Target": "Permissions exported to CSV: ${siteName}_permissions_${timestamp}.csv",
+      "Value": "",
+      "Comment": "Display a message in the UI.Vision RPA log confirming the export is complete and showing the filename"
+    }
+  ]
+}
