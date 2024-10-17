@@ -1,0 +1,66 @@
+{
+  "Name": "CSV-OpenAllNewTabs",
+  "CreationDate": "2024-10-17",
+  "Commands": [
+    {
+      "Command": "label",
+      "Target": "start",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "Read CSV, place urls here, run loops",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "urls.csv",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var x = parseInt((${!csvReadLineNumber} / ${!csvReadMaxRow})*10000); var x = x/100; return x",
+      "Value": "percentage",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "${percentage}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Loop ${!csvReadLineNumber} of ${!csvReadMaxRow} (${percentage}%)",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number (${!csvReadLineNumber}) + 1",
+      "Value": "!csvReadLineNumber",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "New Tab",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "selectWindow",
+      "Target": "tab=open",
+      "Value": "${!col1}",
+      "Description": ""
+    },
+    {
+      "Command": "gotoLabel",
+      "Target": "start",
+      "Value": "",
+      "Description": ""
+    }
+  ]
+}
