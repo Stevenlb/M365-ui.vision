@@ -1,5 +1,5 @@
 {
-  "Name": "CheckIfURLContainsSite",
+  "Name": "Open Site Permissions",
   "CreationDate": "2024-10-17",
   "Commands": [
     {
@@ -17,6 +17,12 @@
     {
       "Command": "executeScript_Sandbox",
       "Target": "return ${Currentpage}.split(\"/\")[2];",
+      "Value": "Subdomain",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "https://${Subdomain}",
       "Value": "Subdomain",
       "Description": ""
     },
@@ -69,8 +75,32 @@
       "Description": ""
     },
     {
+      "Command": "store",
+      "Target": "${Subdomain}",
+      "Value": "SiteURL",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "SiteURL=${SiteURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${SiteURL}/_layouts/15/user.aspx",
+      "Value": "PermissionsURL",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "PermissionsURL=${PermissionsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
       "Command": "gotoLabel",
-      "Target": "end",
+      "Target": "OpenPermissionsURL",
       "Value": "",
       "Description": ""
     },
@@ -78,6 +108,12 @@
       "Command": "label",
       "Target": "isnotrootsite",
       "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "",
+      "Value": "SiteURL",
       "Description": ""
     },
     {
@@ -99,6 +135,30 @@
       "Description": ""
     },
     {
+      "Command": "store",
+      "Target": "${Subdomain}/sites/${SiteName}",
+      "Value": "SiteURL",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "SiteURL=${SiteURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${SiteURL}/_layouts/15/user.aspx",
+      "Value": "PermissionsURL",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "PermissionsURL=${PermissionsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
       "Command": "comment",
       "Target": "echo // RootPath=${RootPath}",
       "Value": "",
@@ -106,7 +166,13 @@
     },
     {
       "Command": "label",
-      "Target": "end",
+      "Target": "OpenPermissionsURL",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${PermissionsURL}",
       "Value": "",
       "Description": ""
     }
