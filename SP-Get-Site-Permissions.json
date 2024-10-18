@@ -1,6 +1,6 @@
 {
-  "Name": "SP-Get-Site-Permissions",
-  "CreationDate": "2024-10-15",
+  "Name": "GetGroupUserPermissions",
+  "CreationDate": "2024-10-17",
   "Commands": [
     {
       "Command": "store",
@@ -9,9 +9,225 @@
       "Description": ""
     },
     {
+      "Command": "comment",
+      "Target": "echo // Currentpage=${Currentpage}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return ${Currentpage}.split(\"/\")[2];",
+      "Value": "Subdomain",
+      "Description": ""
+    },
+    {
       "Command": "store",
-      "Target": "3",
-      "Value": "currentline",
+      "Target": "https://${Subdomain}",
+      "Value": "Subdomain",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // Subdomain=${Subdomain}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "/sites/",
+      "Value": "searchfor",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var haystack1 = ${Currentpage}; var needle = ${searchfor};  return (haystack1.lastIndexOf(needle)  > 0);",
+      "Value": "result",
+      "Description": ".includes done with lastIndexOf ES%"
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // ${result} ",
+      "Value": "green",
+      "Description": "TRUE because the string contains /sites/"
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${result} == false",
+      "Value": "isrootsite",
+      "Description": ""
+    },
+    {
+      "Command": "gotoLabel",
+      "Target": "isnotrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "isrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // is a root site",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Subdomain}",
+      "Value": "SiteURL",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "SiteURL=${SiteURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${SiteURL}/_layouts/15/user.aspx",
+      "Value": "PermissionsURL",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "PermissionsURL=${PermissionsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "gotoLabel",
+      "Target": "OpenPermissionsURL",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "isnotrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "",
+      "Value": "SiteURL",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // Is not a root site",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return ${Currentpage}.split(\"/\")[4];",
+      "Value": "SiteName",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // SiteName=${SiteName}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Subdomain}/sites/${SiteName}",
+      "Value": "SiteURL",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // SiteURL=${SiteURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${SiteURL}/_layouts/15/user.aspx",
+      "Value": "PermissionsURL",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // PermissionsURL=${PermissionsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // RootPath=${RootPath}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${PermissionsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "1",
+      "Value": "currentlinegroups",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "getgroups",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "\"#LNF\"",
+      "Value": "UserName",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Clearing user name",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number (${currentlinegroups}) + 1",
+      "Value": "currentlinegroups",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "20",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Opening Permissions URL",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${PermissionsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${!URL}",
+      "Value": "Currentpage",
       "Description": ""
     },
     {
@@ -22,7 +238,7 @@
     },
     {
       "Command": "store",
-      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[1]/input[1]",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentlinegroups}]/td[1]/input[1]",
       "Value": "GroupIDxpath",
       "Description": ""
     },
@@ -46,7 +262,7 @@
     },
     {
       "Command": "storeText",
-      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[2]/table/tbody/tr/td/a",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentlinegroups}]/td[2]/table/tbody/tr/td/a",
       "Value": "Name",
       "Description": ""
     },
@@ -58,14 +274,128 @@
     },
     {
       "Command": "storeText",
-      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[3]",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentlinegroups}]/td[3]",
       "Value": "Type",
       "Description": ""
     },
     {
       "Command": "storeText",
-      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentline}]/td[4]",
+      "Target": "xpath=//*[@id=\"ctl00_PlaceHolderMain_rptrUsers\"]/tbody/tr[${currentlinegroups}]/td[4]",
       "Value": "PermissionLevel",
+      "Description": ""
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${Type}==\"User\"",
+      "Value": "writecsvline",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "20",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//*/tbody/tr[${currentlinegroups}]/td[2]/table/tbody/tr/td/a",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "open // ${GroupUrl}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "currentlineusers",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "GetUsers",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "storeValue",
+      "Target": "xpath=//*/tbody/tr[${currentlineusers}]/td[1]/input[1]",
+      "Value": "UserID",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // UserID=${UserID}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "click // ",
+      "Value": "UserID",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=//*/tbody/tr[${currentlineusers}]/td[3]/table/tbody/tr/td/span/a",
+      "Value": "UserName",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Getting Info for ${UserName}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=//*/tbody/tr[${currentlineusers}]/td[5]",
+      "Value": "UserTitle",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // UserTitle=${UserTitle}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=//*/tbody/tr[${currentlineusers}]/td[6]",
+      "Value": "UserDept",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "UserDept=${UserDept}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${UserName}==\"#LNF\"",
+      "Value": "getgroups",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "writecsvline",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Setting CSVLine",
+      "Value": "",
       "Description": ""
     },
     {
@@ -94,14 +424,38 @@
     },
     {
       "Command": "store",
-      "Target": "${Currentpage}",
+      "Target": "${UserID}",
       "Value": "!csvLine",
       "Description": ""
     },
     {
-      "Command": "echo",
-      "Target": "csvLine is ${!csvLine}",
+      "Command": "store",
+      "Target": "${UserName}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${UserTitle}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${UserDept}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "echo // csvLine is ${!csvLine}",
       "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number (${currentlineusers}) + 1",
+      "Value": "currentlineusers",
       "Description": ""
     },
     {
@@ -111,9 +465,9 @@
       "Description": ""
     },
     {
-      "Command": "executeScript_Sandbox",
-      "Target": "return Number (${currentline}) + 1",
-      "Value": "currentline",
+      "Command": "gotoLabel",
+      "Target": "GetUsers",
+      "Value": "",
       "Description": ""
     },
     {
