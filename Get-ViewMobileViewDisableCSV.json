@@ -1,0 +1,342 @@
+{
+  "Name": "Get-ViewMobileViewDisableCSV",
+  "CreationDate": "2024-10-18",
+  "Commands": [
+    {
+      "Command": "label",
+      "Target": "start",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "csvRead",
+      "Target": "mobileviewurls.csv",
+      "Value": "",
+      "Description": "Read CSV, place urls here, run loops"
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number (${!csvReadLineNumber}) + 1",
+      "Value": "!csvReadLineNumber",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${!col1}",
+      "Value": "SiteURL",
+      "Description": "Set first column as SiteURL"
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return ${SiteURL}.split(\"/\")[2];",
+      "Value": "Subdomain",
+      "Description": "Getting Subdomain and Domain"
+    },
+    {
+      "Command": "store",
+      "Target": "https://${Subdomain}",
+      "Value": "Subdomain",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "/sites/",
+      "Value": "searchfor",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var haystack1 = ${SiteURL}; var needle = ${searchfor};  return (haystack1.lastIndexOf(needle)  > 0);",
+      "Value": "result",
+      "Description": ".includes done with lastIndexOf ES%"
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${result} == false",
+      "Value": "isrootsite",
+      "Description": ""
+    },
+    {
+      "Command": "gotoLabel",
+      "Target": "isnotrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "isrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Subdomain}",
+      "Value": "SiteURL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${SiteURL}/_layouts/15/mcontent.aspx",
+      "Value": "ListsURL",
+      "Description": ""
+    },
+    {
+      "Command": "gotoLabel",
+      "Target": "OpenListsURL",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "isnotrootsite",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return ${SiteURL}.split(\"/\")[4];",
+      "Value": "SiteName",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Subdomain}/sites/${SiteName}",
+      "Value": "SiteURL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${SiteURL}/_layouts/15/mcontent.aspx",
+      "Value": "ListsURL",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "OpenListsURL",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "1",
+      "Value": "currentlineLists",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "getLists",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "20",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${ListsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "\"#LNF\"",
+      "Value": "CustomizeList",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "\"#LNF\"",
+      "Value": "ListName",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number (${currentlineLists}) + 1",
+      "Value": "currentlineLists",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=//*/tbody/tr[2]/td/a[${currentlineLists}]",
+      "Value": "CustomizeList",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var str = ${CustomizeList}; var res = str.split('\"')[1]; return res;",
+      "Value": "ListName",
+      "Description": ""
+    },
+    {
+      "Command": "storeAttribute",
+      "Target": "xpath=//*/tbody/tr[2]/td/a[${currentlineLists}]@href",
+      "Value": "ListSettingRelURL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${Subdomain}${ListSettingRelURL}",
+      "Value": "ListSettingURL",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "0",
+      "Value": "currentlineviews",
+      "Description": ""
+    },
+    {
+      "Command": "label",
+      "Target": "getviews",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "20",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "${ListsURL}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "clickAndWait",
+      "Target": "xpath=//*/tbody/tr[2]/td/a[${currentlineLists}]",
+      "Value": "",
+      "Description": "getviews"
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "return Number (${currentlineviews}) + 1",
+      "Value": "currentlineviews",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "storeText",
+      "Target": "xpath=(//a[@id='onetid200'])[${currentlineviews}]",
+      "Value": "ViewNameTable",
+      "Description": ""
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${ViewNameTable}==\"#LNF\"",
+      "Value": "getLists",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "20",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "clickAndWait",
+      "Target": "xpath=(//a[@id='onetid200'])[${currentlineviews}]",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "2",
+      "Value": "!TIMEOUT_WAIT",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${!URL}",
+      "Value": "ViewURL",
+      "Description": ""
+    },
+    {
+      "Command": "storeAttribute",
+      "Target": "xpath=//*[@id=\"ViewName\"]@Value",
+      "Value": "ViewName",
+      "Description": ""
+    },
+    {
+      "Command": "storeAttribute",
+      "Target": "xpath=//*[@id=\"onetidIOCheckMobileView\"]@checked",
+      "Value": "MobileViewEnabledRaw",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var str = ${MobileViewEnabledRaw}; var res = str.replace(\"#LNF\", \"unchecked\"); return res;",
+      "Value": "MobileViewEnabled",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${ListName}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${ViewName}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${MobileViewEnabled}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${ListSettingURL}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "${ViewURL}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "${!csvLine}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "ViewMobileStatus",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "gotoIf",
+      "Target": "${ViewName}!=\"#LNF\"",
+      "Value": "getviews",
+      "Description": ""
+    }
+  ]
+}
