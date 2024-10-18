@@ -2,7 +2,7 @@
 An assortment of UI.Vision scripts that automate tasks in Microsoft 365, SharePoint Online, Teams, etc.
 
 # The Scripts!
-- [SP-Get-Site-Permissions.json]([https://ui.vision/](https://github.com/Stevenlb/M365-ui.vision/blob/main/SP-Get-Site-Permissions.json) - Pulls permissions for the current site, iterating through the groups to provide users. Does not currently provide list and item level permissions.
+- [SP-Get-Site-Permissions.json](https://github.com/Stevenlb/M365-ui.vision/blob/main/SP-Get-Site-Permissions.json) - Pulls permissions for the current site, iterating through the groups to provide users. Does not currently provide list and item level permissions.
 
 
 # Other Resources
