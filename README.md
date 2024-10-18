@@ -3,6 +3,7 @@ An assortment of UI.Vision scripts that automate tasks in Microsoft 365, SharePo
 
 # The Scripts!
 - [SP-Get-Site-Permissions.json](https://github.com/Stevenlb/M365-ui.vision/blob/main/SP-Get-Site-Permissions.json) - Pulls permissions for the current site, iterating through the groups to provide users. Does not currently provide list and item level permissions.
+- [CSV-OpenAllNewTab.json](https://github.com/Stevenlb/M365-ui.vision/blob/main/CSV-OpenAllNewTab.json) - Reads CSV, iterates through opening each line in tabs.
 
 
 # Other Resources
