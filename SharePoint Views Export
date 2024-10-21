@@ -1,0 +1,36 @@
+{
+  "Name": "SharePoint Views Export",
+  "CreationDate": "2024-10-21",
+  "Commands": [
+    {
+      "Command": "open",
+      "Target": "https://your-sharepoint-site-url/",
+      "Value": ""
+    },
+    {
+      "Command": "pause",
+      "Target": "2000",
+      "Value": ""
+    },
+    {
+      "Command": "executeScript",
+      "Target": "const siteUrl = window.location.origin + window.location.pathname;\nconst listData = [];\n\nasync function getSiteInfo() {\n  const response = await fetch(`${siteUrl}/_api/web?$select=Title`, {\n    headers: { 'Accept': 'application/json;odata=verbose' }\n  });\n  const data = await response.json();\n  return data.d.Title;\n}\n\nasync function getLists() {\n  const response = await fetch(`${siteUrl}/_api/web/lists?$select=Title,RootFolder/ServerRelativeUrl&$expand=RootFolder`, {\n    headers: { 'Accept': 'application/json;odata=verbose' }\n  });\n  const data = await response.json();\n  return data.d.results;\n}\n\nasync function getViews(listId) {\n  const response = await fetch(`${siteUrl}/_api/web/lists(guid'${listId}')/views?$select=Title,Id,MobileView`, {\n    headers: { 'Accept': 'application/json;odata=verbose' }\n  });\n  const data = await response.json();\n  return data.d.results;\n}\n\nasync function processLists() {\n  const siteName = await getSiteInfo();\n  const lists = await getLists();\n  \n  for (const list of lists) {\n    const views = await getViews(list.Id);\n    for (const view of views) {\n      listData.push({\n        SiteName: siteName,\n        ListName: list.Title,\n        ListUrl: list.RootFolder.ServerRelativeUrl,\n        ViewName: view.Title,\n        ViewSettingsUrl: `${siteUrl}/_layouts/15/listedit.aspx?List={${list.Id}}&View={${view.Id}}`,\n        IsMobileView: view.MobileView\n      });\n    }\n  }\n  \n  return listData;\n}\n\nawait processLists();\nreturn JSON.stringify(listData);",
+      "Value": "listDataJson"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "const listData = JSON.parse(${listDataJson});\nlet csv = 'Site Name,List Name,List URL,View Name,View Settings URL,Is Mobile View\\n';\nfor (const item of listData) {\n  csv += `${item.SiteName},${item.ListName},${item.ListUrl},${item.ViewName},${item.ViewSettingsUrl},${item.IsMobileView}\\n`;\n}\nreturn csv;",
+      "Value": "csvData"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "const blob = new Blob([${csvData}], { type: 'text/csv;charset=utf-8;' });\nconst link = document.createElement('a');\nif (link.download !== undefined) {\n  const url = URL.createObjectURL(blob);\n  link.setAttribute('href', url);\n  link.setAttribute('download', 'SharePointViewsExport.csv');\n  link.style.visibility = 'hidden';\n  document.body.appendChild(link);\n  link.click();\n  document.body.removeChild(link);\n}\nreturn 'CSV file has been generated and download should start automatically.';",
+      "Value": "downloadMessage"
+    },
+    {
+      "Command": "echo",
+      "Target": "${downloadMessage}",
+      "Value": ""
+    }
+  ]
+}
