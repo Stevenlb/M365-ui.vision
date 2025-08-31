@@ -1,0 +1,306 @@
+{
+  "Name": "SharePointTenantSharingSettings",
+  "CreationDate": "2025-8-30",
+  "Commands": [
+    {
+      "Command": "store",
+      "Target": "medium",
+      "Value": "!replayspeed",
+      "Description": ""
+    },
+    {
+      "Command": "open",
+      "Target": "https://admin.microsoft.com/sharepoint",
+      "Value": "",
+      "Description": "Re-focus on the new tab"
+    },
+    {
+      "Command": "pause",
+      "Target": "5000",
+      "Value": "",
+      "Description": "Wait 5 seconds for page to load/redirect"
+    },
+    {
+      "Command": "store",
+      "Target": "true",
+      "Value": "!errorIgnore",
+      "Description": "Do not stop script if element is not found"
+    },
+    {
+      "Command": "waitForElementVisible",
+      "Target": "xpath=//div[text()='Home']",
+      "Value": "10",
+      "Description": "Wait up to 10 seconds for the login to complete"
+    },
+    {
+      "Command": "store",
+      "Target": "false",
+      "Value": "!errorIgnore",
+      "Description": "Reset error handling"
+    },
+    {
+      "Command": "if_v2",
+      "Target": "${!statusOK} === false",
+      "Value": "",
+      "Description": "If waitForElementVisible failed, then pause."
+    },
+    {
+      "Command": "echo",
+      "Target": "You are not logged in, or the page is not loaded. Please log in now. The script is paused. Once Logged in and/or the page is loaded, click Resume in the UI.Vision IDE.",
+      "Value": "blue",
+      "Description": "Inform the user to log in"
+    },
+    {
+      "Command": "pause",
+      "Target": "",
+      "Value": "",
+      "Description": "Pause the script to wait for manual login"
+    },
+    {
+      "Command": "waitForElementVisible",
+      "Target": "xpath=//span[text()='SharePoint admin center']",
+      "Value": "30",
+      "Description": "Wait for page to load AFTER manual login"
+    },
+    {
+      "Command": "store",
+      "Target": "medium",
+      "Value": "!replayspeed",
+      "Description": ""
+    },
+    {
+      "Command": "end",
+      "Target": "",
+      "Value": "",
+      "Description": "Ends the if block"
+    },
+    {
+      "Command": "executeScript",
+      "Target": "return window.adminPageContext.portalUrl.replace('https://','').replace('.sharepoint.com/','');",
+      "Value": "tenantName",
+      "Description": "Extract tenant name from page context"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//button[contains(translate(., 'POLICIES', 'policies'), 'policies')]",
+      "Value": "",
+      "Description": "Click on Policies (case-insensitive) in the left navigation"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//a[@href='#/sharing']",
+      "Value": "",
+      "Description": "Click on Sharing under Policies"
+    },
+    {
+      "Command": "storeAttribute",
+      "Target": "xpath=(//div[@data-automation-id='external-sharing-setting']//div[@role='slider'])[1]@aria-valuetext",
+      "Value": "sharepointLevel",
+      "Description": "Save SharePoint sharing level"
+    },
+    {
+      "Command": "storeAttribute",
+      "Target": "xpath=(//div[@data-automation-id='external-sharing-setting']//div[@role='slider'])[2]@aria-valuetext",
+      "Value": "oneDriveLevel",
+      "Description": "Save OneDrive sharing level"
+    },
+    {
+      "Command": "click",
+      "Target": "xpath=//div[@data-automation-id='external-sharing-advanced-setting']",
+      "Value": "",
+      "Description": "Expand 'More external sharing settings'"
+    },
+    {
+      "Command": "storeChecked",
+      "Target": "xpath=//span[text()='Limit external sharing by domain']/ancestor::label/preceding-sibling::input",
+      "Value": "limitByDomain",
+      "Description": ""
+    },
+    {
+      "Command": "storeChecked",
+      "Target": "xpath=//span[text()='Allow only users in specific security groups to share externally']/ancestor::label/preceding-sibling::input",
+      "Value": "limitToSecurityGroups",
+      "Description": ""
+    },
+    {
+      "Command": "storeChecked",
+      "Target": "xpath=//span[text()=\"Allow guests to share items they don't own\"]/ancestor::label/preceding-sibling::input",
+      "Value": "allowGuestsToShareUnowned",
+      "Description": ""
+    },
+    {
+      "Command": "storeChecked",
+      "Target": "xpath=//span[contains(text(),'Guest access to a site or OneDrive will expire')]/ancestor::label/preceding-sibling::input",
+      "Value": "guestAccessExpires",
+      "Description": ""
+    },
+    {
+      "Command": "storeValue",
+      "Target": "xpath=//span[contains(text(),'Guest access to a site or OneDrive will expire')]/ancestor::div[contains(@class, 'U_Iy0gQ_qbOa0')]/div[contains(@class, 'ms-TextField')]//input",
+      "Value": "guestAccessExpirationDays",
+      "Description": ""
+    },
+    {
+      "Command": "storeChecked",
+      "Target": "xpath=//span[contains(text(),'People who use a verification code must reauthenticate')]/ancestor::label/preceding-sibling::input",
+      "Value": "verificationCodeReauth",
+      "Description": ""
+    },
+    {
+      "Command": "storeValue",
+      "Target": "xpath=//span[contains(text(),'People who use a verification code must reauthenticate')]/ancestor::div[contains(@class, 'E_Y4ivp_qbOa0')]/div[contains(@class, 'ms-TextField')]//input",
+      "Value": "verificationCodeReauthDays",
+      "Description": ""
+    },
+    {
+      "Command": "comment",
+      "Target": "--- Save variables to CSV one line at a time ---",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var d=new Date(); return d.getFullYear() + '-' + (d.getMonth()+1) + '-' + d.getDate();",
+      "Value": "todayDate",
+      "Description": "Get date using Javascript"
+    },
+    {
+      "Command": "executeScript_Sandbox",
+      "Target": "var d=new Date(); return d.getHours() + '-' + d.getMinutes() + '-' + d.getSeconds();",
+      "Value": "currentTime",
+      "Description": "Get time using Javascript"
+    },
+    {
+      "Command": "store",
+      "Target": "${tenantName}-SharePointSettings-${todayDate}-${currentTime}",
+      "Value": "csvFilename",
+      "Description": "Create the dynamic CSV filename"
+    },
+    {
+      "Command": "store",
+      "Target": "Tenant Name: ${tenantName}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": "This creates the file and writes the first line"
+    },
+    {
+      "Command": "store",
+      "Target": "SharePoint Level: ${sharepointLevel}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": "This appends the next line"
+    },
+    {
+      "Command": "store",
+      "Target": "OneDrive Level: ${oneDriveLevel}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Limit external sharing by domain: ${limitByDomain}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Allow only users in specific security groups to share externally: ${limitToSecurityGroups}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Allow guests to share items they don't own: ${allowGuestsToShareUnowned}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Guest access expires: ${guestAccessExpires}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Guest access expiration days: ${guestAccessExpirationDays}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Verification code reauthentication: ${verificationCodeReauth}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "store",
+      "Target": "Verification code reauth days: ${verificationCodeReauthDays}",
+      "Value": "!csvLine",
+      "Description": ""
+    },
+    {
+      "Command": "csvSave",
+      "Target": "${csvFilename}",
+      "Value": "",
+      "Description": ""
+    },
+    {
+      "Command": "echo",
+      "Target": "Script complete. Output file saved as ${csvFilename}",
+      "Value": "green",
+      "Description": ""
+    }
+  ]
+}
